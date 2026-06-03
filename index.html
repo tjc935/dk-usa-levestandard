@@ -6,515 +6,296 @@
 <title>Levestandard: Danmark vs. USA</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
-  :root {
-    --dk-red: #C60C30;
-    --dk-white: #FFFFFF;
-    --us-blue: #0A3161;
-    --us-red: #B31942;
-    --bg: #f8f9fa;
-    --card: #ffffff;
-    --border: #dee2e6;
-    --text: #212529;
-    --muted: #6c757d;
-    --warning: #856404;
-    --warning-bg: #fff3cd;
-    --warning-border: #ffc107;
-    --success-bg: #d1e7dd;
-    --success-border: #198754;
-  }
+:root {
+  --dk: #C60C30; --us: #0A3161;
+  --dk-light: rgba(198,12,48,.12); --us-light: rgba(10,49,97,.12);
+  --bg: #f5f6f8; --card: #fff; --border: #dde1e7;
+  --text: #1a1d23; --muted: #6b7280;
+  --warn-bg: #fff8e1; --warn-border: #fbbf24;
+  --ok-bg: #ecfdf5; --ok-border: #10b981;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Georgia, serif; background: var(--bg); color: var(--text); line-height: 1.75; }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+/* NAV */
+nav {
+  background: #111827; color: #fff;
+  display: flex; align-items: center; gap: 2rem;
+  padding: 0 2rem; height: 54px;
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 2px 10px rgba(0,0,0,.4);
+}
+.brand { font-family: sans-serif; font-weight: 700; font-size: .95rem; letter-spacing: .5px; white-space: nowrap; }
+nav a { color: rgba(255,255,255,.7); text-decoration: none; font-family: sans-serif; font-size: .85rem; padding: .25rem 0; border-bottom: 2px solid transparent; transition: all .15s; }
+nav a:hover, nav a.active { color: #fff; border-bottom-color: #fbbf24; }
+.nav-right { margin-left: auto; display: flex; gap: 1.5rem; }
 
-  body {
-    font-family: 'Georgia', serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.7;
-  }
+/* HERO */
+.hero { background: linear-gradient(135deg, var(--us) 0%, #1e4d7b 45%, #8b0a1e 100%); color: #fff; padding: 4.5rem 2rem 3.5rem; text-align: center; }
+.hero h1 { font-size: 2.4rem; line-height: 1.25; margin-bottom: .75rem; }
+.hero .sub { max-width: 680px; margin: 0 auto 1.5rem; font-size: 1.05rem; opacity: .85; font-family: sans-serif; }
+.tags { display: flex; flex-wrap: wrap; gap: .5rem; justify-content: center; }
+.tag { background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.35); border-radius: 20px; padding: .2rem .85rem; font-size: .78rem; font-family: sans-serif; }
 
-  nav {
-    background: var(--text);
-    color: white;
-    padding: 0 2rem;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-    height: 52px;
-    box-shadow: 0 2px 8px rgba(0,0,0,.3);
-  }
+/* LAYOUT */
+.container { max-width: 1060px; margin: 0 auto; padding: 0 1.5rem; }
+section { padding: 3.5rem 0; }
+section + section { border-top: 2px solid var(--border); }
+.section-label { font-family: sans-serif; font-size: .72rem; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--muted); margin-bottom: .5rem; }
+h2 { font-size: 1.8rem; margin-bottom: 1rem; }
+h3 { font-size: 1.15rem; margin: 1.5rem 0 .6rem; }
+p { margin-bottom: 1rem; }
 
-  nav .brand {
-    font-size: .9rem;
-    font-weight: bold;
-    letter-spacing: .5px;
-    font-family: sans-serif;
-  }
+/* CALLOUT BOXES */
+.box { border-radius: 10px; padding: 1.25rem 1.4rem; margin: 1.5rem 0; font-family: sans-serif; font-size: .92rem; }
+.box-warn { background: var(--warn-bg); border-left: 4px solid var(--warn-border); color: #78350f; }
+.box-ok   { background: var(--ok-bg);   border-left: 4px solid var(--ok-border);   color: #065f46; }
+.box-info { background: #eff6ff; border-left: 4px solid #3b82f6; color: #1e40af; }
+.box-red  { background: #fef2f2; border-left: 4px solid #ef4444; color: #7f1d1d; }
+.box strong { display: block; font-size: .95rem; margin-bottom: .3rem; }
 
-  nav a {
-    color: rgba(255,255,255,.8);
-    text-decoration: none;
-    font-family: sans-serif;
-    font-size: .85rem;
-    padding: .3rem 0;
-    border-bottom: 2px solid transparent;
-    transition: all .2s;
-  }
+/* FINDING CARDS */
+.finding { display: flex; gap: 1rem; align-items: flex-start; padding: 1.2rem; background: #fff; border: 1px solid var(--border); border-radius: 10px; margin-bottom: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,.05); }
+.fnum { background: var(--text); color: #fff; min-width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .82rem; font-family: sans-serif; font-weight: 700; flex-shrink: 0; margin-top: 3px; }
+.fbody { font-size: .94rem; }
+.fbody strong { display: block; margin-bottom: .3rem; font-size: .97rem; }
 
-  nav a:hover, nav a.active {
-    color: white;
-    border-bottom-color: #ffc107;
-  }
+/* KEY STAT BOXES */
+.stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1.5rem 0; }
+.stat-card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
+.stat-num { font-size: 2.2rem; font-weight: 700; line-height: 1.1; }
+.stat-label { font-family: sans-serif; font-size: .82rem; color: var(--muted); margin-top: .35rem; }
+.stat-dk .stat-num { color: var(--dk); }
+.stat-us .stat-num { color: var(--us); }
+.stat-cross .stat-num { color: #059669; }
 
-  .hero {
-    background: linear-gradient(135deg, var(--us-blue) 0%, #1a5276 50%, var(--dk-red) 100%);
-    color: white;
-    padding: 4rem 2rem 3rem;
-    text-align: center;
-  }
+/* TABLES */
+.tbl-wrap { overflow-x: auto; margin: 1.5rem 0; border-radius: 10px; border: 1px solid var(--border); }
+table { width: 100%; border-collapse: collapse; font-family: sans-serif; font-size: .875rem; }
+thead tr { background: #1a1d23; color: #fff; }
+thead th { padding: .7rem 1rem; text-align: left; font-weight: 600; }
+tbody tr:nth-child(even) { background: #f9fafb; }
+tbody tr:hover { background: #eef2ff; }
+tbody td { padding: .6rem 1rem; border-top: 1px solid #e5e7eb; }
+tfoot td { padding: .5rem 1rem; font-size: .78rem; color: var(--muted); background: #f9fafb; border-top: 2px solid var(--border); font-style: italic; }
+.dk-row { background: rgba(198,12,48,.06) !important; }
+.us-row { background: rgba(10,49,97,.06) !important; }
+.cross-row { background: #fef9c3 !important; font-weight: 600; }
+.pos { color: #059669; font-weight: 700; }
+.neg { color: #dc2626; font-weight: 700; }
+.neut { color: #d97706; font-weight: 700; }
 
-  .hero h1 {
-    font-size: 2.2rem;
-    margin-bottom: .8rem;
-    line-height: 1.3;
-  }
+/* CHARTS */
+.chart-wrap { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; margin: 1.5rem 0; }
+.chart-title { font-family: sans-serif; font-size: .95rem; font-weight: 700; margin-bottom: .6rem; color: var(--text); }
+.chart-sub { font-family: sans-serif; font-size: .8rem; color: var(--muted); margin-bottom: 1rem; }
+canvas { max-height: 420px; }
 
-  .hero .subtitle {
-    font-size: 1.1rem;
-    opacity: .85;
-    max-width: 700px;
-    margin: 0 auto 1.5rem;
-    font-family: sans-serif;
-  }
+/* TABS */
+.tabs { display: flex; border-bottom: 2px solid var(--border); margin-bottom: 1.5rem; gap: 0; }
+.tab-btn { padding: .55rem 1.2rem; font-family: sans-serif; font-size: .88rem; border: none; background: none; cursor: pointer; color: var(--muted); border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all .15s; }
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active { color: var(--text); border-bottom-color: var(--us); font-weight: 700; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
 
-  .hero .tags {
-    display: flex;
-    gap: .5rem;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
+/* GRID */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+@media(max-width:700px){ .grid2 { grid-template-columns: 1fr; } .stats-row { grid-template-columns: 1fr; } .hero h1 { font-size: 1.7rem; } }
 
-  .tag {
-    background: rgba(255,255,255,.2);
-    border: 1px solid rgba(255,255,255,.4);
-    border-radius: 20px;
-    padding: .25rem .8rem;
-    font-size: .8rem;
-    font-family: sans-serif;
-  }
+/* METHOD FLAGS */
+.mflag { background: var(--warn-bg); border: 1px solid var(--warn-border); border-radius: 8px; padding: 1.2rem; margin-bottom: 1rem; font-family: sans-serif; font-size: .9rem; }
+.mflag.red { background: #fef2f2; border-color: #fca5a5; }
+.mflag.green { background: var(--ok-bg); border-color: #6ee7b7; }
+.mflag-title { font-weight: 700; margin-bottom: .35rem; display: flex; align-items: center; gap: .4rem; }
+.mflag.red .mflag-title { color: #991b1b; }
+.mflag.green .mflag-title { color: #065f46; }
 
-  .container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
-  }
+/* CORRECTION BADGE */
+.cbadge { background: #dc2626; color: #fff; border-radius: 3px; padding: .1rem .35rem; font-size: .72rem; font-family: sans-serif; }
+.srcbadge { background: #2563eb; color: #fff; border-radius: 3px; padding: .1rem .35rem; font-size: .72rem; font-family: sans-serif; }
 
-  section {
-    padding: 3rem 0;
-  }
+/* CROSSOVER HIGHLIGHT */
+.crossover-banner { background: linear-gradient(90deg, var(--dk-light), var(--us-light)); border: 2px solid #a78bfa; border-radius: 12px; padding: 1.5rem; margin: 2rem 0; text-align: center; }
+.crossover-banner .big { font-size: 1.6rem; font-weight: 700; margin-bottom: .5rem; }
+.crossover-banner p { font-family: sans-serif; font-size: .95rem; color: var(--muted); margin: 0; }
 
-  section + section {
-    border-top: 1px solid var(--border);
-  }
-
-  .section-label {
-    font-family: sans-serif;
-    font-size: .75rem;
-    font-weight: bold;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: .5rem;
-  }
-
-  h2 {
-    font-size: 1.7rem;
-    margin-bottom: 1rem;
-    color: var(--text);
-  }
-
-  h3 {
-    font-size: 1.2rem;
-    margin-bottom: .8rem;
-    margin-top: 1.5rem;
-    color: var(--text);
-  }
-
-  p { margin-bottom: 1rem; }
-
-  .alert {
-    border-left: 4px solid var(--warning-border);
-    background: var(--warning-bg);
-    color: var(--warning);
-    padding: 1rem 1.2rem;
-    border-radius: 0 6px 6px 0;
-    margin: 1.5rem 0;
-    font-family: sans-serif;
-    font-size: .9rem;
-  }
-
-  .alert.success {
-    border-left-color: var(--success-border);
-    background: var(--success-bg);
-    color: #0a3622;
-  }
-
-  .alert strong { display: block; margin-bottom: .3rem; }
-
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 1px 4px rgba(0,0,0,.06);
-  }
-
-  .card h3 { margin-top: 0; }
-
-  .grid-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-  }
-
-  @media (max-width: 700px) {
-    .grid-2 { grid-template-columns: 1fr; }
-    .hero h1 { font-size: 1.6rem; }
-  }
-
-  .finding {
-    display: flex;
-    gap: 1rem;
-    align-items: flex-start;
-    padding: 1.2rem;
-    background: var(--bg);
-    border-radius: 8px;
-    margin-bottom: 1rem;
-  }
-
-  .finding-num {
-    background: var(--text);
-    color: white;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: .85rem;
-    font-family: sans-serif;
-    flex-shrink: 0;
-    margin-top: 2px;
-  }
-
-  .finding-body strong { display: block; margin-bottom: .3rem; }
-  .finding-body { font-size: .95rem; }
-
-  /* Tables */
-  .table-wrap {
-    overflow-x: auto;
-    margin: 1.5rem 0;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-family: sans-serif;
-    font-size: .88rem;
-  }
-
-  thead tr {
-    background: var(--text);
-    color: white;
-  }
-
-  thead th {
-    padding: .75rem 1rem;
-    text-align: left;
-    font-weight: 600;
-  }
-
-  tbody tr:nth-child(even) { background: #f8f9fa; }
-  tbody tr:hover { background: #eef2f7; }
-
-  tbody td {
-    padding: .65rem 1rem;
-    border-top: 1px solid #e9ecef;
-  }
-
-  .flag { font-size: 1.2em; }
-
-  tfoot td {
-    padding: .5rem 1rem;
-    font-size: .8rem;
-    color: var(--muted);
-    background: #f8f9fa;
-    border-top: 2px solid var(--border);
-    font-style: italic;
-  }
-
-  /* Chart containers */
-  .chart-wrap {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 1.5rem;
-    margin: 1.5rem 0;
-  }
-
-  .chart-wrap canvas { max-height: 380px; }
-
-  .chart-title {
-    font-family: sans-serif;
-    font-size: .95rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-    color: var(--text);
-  }
-
-  /* Color pills */
-  .pill-dk {
-    background: #fce4ec;
-    color: #c62828;
-    border-radius: 4px;
-    padding: .15rem .5rem;
-    font-size: .8rem;
-    font-family: sans-serif;
-  }
-
-  .pill-us {
-    background: #e3f2fd;
-    color: #0d47a1;
-    border-radius: 4px;
-    padding: .15rem .5rem;
-    font-size: .8rem;
-    font-family: sans-serif;
-  }
-
-  /* Footnotes */
-  .footnotes {
-    font-size: .82rem;
-    color: var(--muted);
-    font-family: sans-serif;
-    border-top: 1px solid var(--border);
-    padding-top: 1rem;
-    margin-top: 2rem;
-  }
-
-  .footnotes p { margin-bottom: .4rem; }
-
-  /* Methodology flag box */
-  .method-flag {
-    background: #fff8e1;
-    border: 2px solid #ffc107;
-    border-radius: 8px;
-    padding: 1.2rem;
-    margin-bottom: 1.2rem;
-    font-family: sans-serif;
-    font-size: .9rem;
-  }
-
-  .method-flag .flag-title {
-    font-weight: bold;
-    color: #795548;
-    display: flex;
-    align-items: center;
-    gap: .4rem;
-    margin-bottom: .4rem;
-    font-size: .95rem;
-  }
-
-  .method-flag.red {
-    background: #fce4ec;
-    border-color: #e91e63;
-  }
-
-  .method-flag.red .flag-title { color: #880e4f; }
-
-  .tabs {
-    display: flex;
-    gap: 0;
-    border-bottom: 2px solid var(--border);
-    margin-bottom: 1.5rem;
-  }
-
-  .tab-btn {
-    padding: .6rem 1.2rem;
-    font-family: sans-serif;
-    font-size: .9rem;
-    border: none;
-    background: none;
-    cursor: pointer;
-    color: var(--muted);
-    border-bottom: 2px solid transparent;
-    margin-bottom: -2px;
-    transition: all .2s;
-  }
-
-  .tab-btn.active {
-    color: var(--text);
-    border-bottom-color: var(--us-blue);
-    font-weight: bold;
-  }
-
-  .tab-panel { display: none; }
-  .tab-panel.active { display: block; }
-
-  footer {
-    background: var(--text);
-    color: rgba(255,255,255,.6);
-    text-align: center;
-    padding: 2rem;
-    font-family: sans-serif;
-    font-size: .85rem;
-    margin-top: 3rem;
-  }
-
-  footer a { color: rgba(255,255,255,.8); }
-
-  .correction-badge {
-    background: #dc3545;
-    color: white;
-    border-radius: 4px;
-    padding: .1rem .4rem;
-    font-size: .75rem;
-    font-family: sans-serif;
-    vertical-align: middle;
-  }
-
-  .source-badge {
-    background: #0d6efd;
-    color: white;
-    border-radius: 4px;
-    padding: .1rem .4rem;
-    font-size: .75rem;
-    font-family: sans-serif;
-    vertical-align: middle;
-  }
-
-  abbr { cursor: help; border-bottom: 1px dotted var(--muted); }
+footer { background: #111827; color: rgba(255,255,255,.55); text-align: center; padding: 2rem; font-family: sans-serif; font-size: .83rem; margin-top: 3rem; }
+footer a { color: rgba(255,255,255,.75); }
+footer p + p { margin-top: .4rem; }
 </style>
 </head>
 <body>
 
 <nav>
-  <span class="brand">DK vs. USA</span>
-  <a href="#academisk" class="active">Akademiske fund</a>
-  <a href="#analyse">Analyse</a>
-  <a href="#data">Data</a>
+  <span class="brand">DK&nbsp;&nbsp;vs.&nbsp;&nbsp;USA</span>
+  <a href="#docs">Akademiske fund</a>
+  <a href="#analyse">Kvintil-analyse</a>
+  <a href="#data">Datakvalitet</a>
   <a href="#metodologi">Metodologi</a>
 </nav>
 
 <div class="hero">
   <h1>Levestandard: Danmark vs. USA</h1>
-  <p class="subtitle">En kvintilbaseret sammenligning af reel koebekraft pa tvaers af indkomstfordelingen &ndash; inkl. skat, overfoersler og vaerdien af offentlig velfaerd</p>
+  <p class="sub">En decil- og kvintilbaseret sammenligning af reel koebekraft &ndash; inkl. skat, overfoersler og vaerdien af offentlig velfaerd</p>
   <div class="tags">
-    <span class="tag">Fordeling</span>
+    <span class="tag">AIC-PPP (OECD EG DNA)</span>
     <span class="tag">CBO 2021</span>
     <span class="tag">Finansministeriet 2022</span>
-    <span class="tag">Effektiv timelonn</span>
-    <span class="tag">Husstand vs. akvivalent</span>
+    <span class="tag">Krydspunkt D3/D4</span>
+    <span class="tag">Husstand vs. aekv.</span>
   </div>
 </div>
 
-<!-- ===== SEKTION 1: AKADEMISKE FUND ===== -->
-<section id="academisk">
+
+<!-- ======= DEL I: AKADEMISKE FUND ======= -->
+<section id="docs">
 <div class="container">
-  <div class="section-label">Del I &mdash; Akademiske fund</div>
+  <div class="section-label">Del I &mdash; Akademiske fund (Krabbe 2024&ndash;2025)</div>
   <h2>Comparative Material Living Standards across Income Deciles</h2>
-  <p style="color:var(--muted);font-family:sans-serif;font-size:.9rem;margin-bottom:1.5rem;">Kilde: Sigurd Seindal Krabbe &mdash; upubliceret analyse, Google Docs 2024&ndash;2025. Nedenstaaende afsnit er baseret paa dokumentets sektionsstruktur.</p>
+  <p style="color:var(--muted);font-family:sans-serif;font-size:.9rem;">Kilde: Sigurd Seindal Krabbe, upubliceret analyse. Metodologisk ramme: OECD Expert Group on Disparities in a National Accounts framework (EG DNA). Data: AIC-PPP (Actual Individual Consumption, kobekraftskorrigeret).</p>
 
-  <div class="alert">
-    <strong>Note om kildeadgang</strong>
-    Det fulde Google Docs-dokument er ikke offentligt tilgaengeligt og kunnne kun laeses med login. Nedenstaaende er baseret paa dokumentets titler og overordnede argumentationsstruktur.
+  <div class="crossover-banner">
+    <div class="big">Krydspunktet ligger ved D3&nbsp;&rarr;&nbsp;D4</div>
+    <p>Danmark har <strong>hoejere</strong> reel levestandard i D1&ndash;D3 (bund 30%). USA har <strong>hoejere</strong> levestandard fra D4 og opefter (toppen 70%).</p>
   </div>
 
+  <!-- Key stats -->
+  <div class="stats-row">
+    <div class="stat-card stat-dk">
+      <div class="stat-num">+51%</div>
+      <div class="stat-label">DK bedre end USA i D1<br>(bund 10%): $35.729 vs. $23.614</div>
+    </div>
+    <div class="stat-card stat-cross">
+      <div class="stat-num">D3/D4</div>
+      <div class="stat-label">Krydspunkt: lande er omtrent<br>lige i D3 (+3,7% til DK)</div>
+    </div>
+    <div class="stat-card stat-us">
+      <div class="stat-num">&minus;65%</div>
+      <div class="stat-label">USA bedre end DK i D10<br>(top 10%): $315.480 vs. $111.156</div>
+    </div>
+  </div>
+
+  <!-- AIC-PPP tabel -->
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Decil</th>
+          <th>Danmark ADI (USD AIC-PPP)</th>
+          <th>USA ADI (USD AIC-PPP)</th>
+          <th>Forskel (DK &minus; USA)</th>
+          <th>Procentvis forskel</th>
+          <th>Hvem er bedst?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="dk-row"><td><strong>D1</strong></td><td>$35.729</td><td>$23.614</td><td class="pos">+$12.115</td><td class="pos">+51,3%</td><td>&#127465;&#127472; Danmark</td></tr>
+        <tr class="dk-row"><td><strong>D2</strong></td><td>$43.668</td><td>$38.727</td><td class="pos">+$4.941</td><td class="pos">+12,8%</td><td>&#127465;&#127472; Danmark</td></tr>
+        <tr class="cross-row"><td><strong>D3</strong></td><td>$48.961</td><td>$47.228</td><td class="neut">+$1.733</td><td class="neut">+3,7%</td><td>&#8776; Omtrent lige</td></tr>
+        <tr class="us-row"><td><strong>D4</strong></td><td>$54.254</td><td>$56.673</td><td class="neg">&minus;$2.419</td><td class="neg">&minus;4,3%</td><td>&#127482;&#127480; USA</td></tr>
+        <tr class="us-row"><td><strong>D5</strong></td><td>$59.548</td><td>$66.119</td><td class="neg">&minus;$6.571</td><td class="neg">&minus;9,9%</td><td>&#127482;&#127480; USA</td></tr>
+        <tr class="us-row"><td><strong>D6</strong></td><td>$64.841</td><td>$75.564</td><td class="neg">&minus;$10.723</td><td class="neg">&minus;14,2%</td><td>&#127482;&#127480; USA</td></tr>
+        <tr class="us-row"><td><strong>D7</strong></td><td>$72.780</td><td>$85.010</td><td class="neg">&minus;$12.230</td><td class="neg">&minus;14,4%</td><td>&#127482;&#127480; USA</td></tr>
+        <tr class="us-row"><td><strong>D8</strong></td><td>$78.074</td><td>$94.455</td><td class="neg">&minus;$16.381</td><td class="neg">&minus;17,3%</td><td>&#127482;&#127480; USA</td></tr>
+        <tr class="us-row"><td><strong>D9</strong></td><td>$92.630</td><td>$141.683</td><td class="neg">&minus;$49.053</td><td class="neg">&minus;34,6%</td><td>&#127482;&#127480; USA</td></tr>
+        <tr class="us-row"><td><strong>D10</strong></td><td>$111.156</td><td>$315.480</td><td class="neg">&minus;$204.324</td><td class="neg">&minus;64,8%</td><td>&#127482;&#127480; USA</td></tr>
+      </tbody>
+      <tfoot>
+        <tr><td colspan="6">ADI = Adjusted Disposable Income inkl. Social Transfers in Kind. AIC-PPP = kobekraftskorrigeret Actual Individual Consumption. Kilde: Krabbe (2024-25), baseret paa OECD EG DNA-ramme. Decilgraenser baseret paa aekvivaleret disponibel indkomst.</td></tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <!-- Chart: AIC-PPP -->
+  <div class="chart-wrap">
+    <div class="chart-title">AIC-PPP Sammenligning: Danmark vs. USA pr. indkomstdecil (USD)</div>
+    <div class="chart-sub">Actual Individual Consumption inkl. sociale ydelser in kind, kobekraftskorrigeret. Krydspunkt: D3/D4.</div>
+    <canvas id="chart-aicppp"></canvas>
+  </div>
+
+  <!-- Chart: Forskel -->
+  <div class="chart-wrap">
+    <div class="chart-title">Forskel i levestandard: Danmark minus USA (USD pr. person)</div>
+    <div class="chart-sub">Positivt = Danmark bedre. Negativt = USA bedre. Ser tydeligt, at fordelen aftager fra D1 til D3, og USA dominerer fra D4+.</div>
+    <canvas id="chart-diff"></canvas>
+  </div>
+
+  <!-- Academic findings -->
+  <h3>Hoveddiskussion og fortolkning</h3>
+
   <div class="finding">
-    <div class="finding-num">1</div>
-    <div class="finding-body">
+    <div class="fnum">1</div>
+    <div class="fbody">
       <strong>Konceptualisering af velfaerd: udover disponibel indkomst</strong>
-      En stringent sammenligning af levestandard kraeever, at man inkluderer mere end markedsindkomst. Gratis sundhed, uddannelse og sociale ydelser er en reel del af husholdningens forbrug &ndash; omend de er usynlige i traditionelle disponible indkomstmaal. Det danske velfaerdsystems universelle karakter giver det en distributiv profil, der fundamentalt adskiller sig fra det amerikanske targeted safety net.
+      Disponibel indkomst alene er en utilstraekkelelig maalestok. Under det danske model finansierer hoej progressiv skat universelle services (sundhed, uddannelse, bornepaedagogik). Under det amerikanske model maa mellemindkomsthusstande (D4&ndash;D6) opbygge praekautionaere kontantreserver mod helbredsrisici, collegeudgifter og markedspris-bornepaedagogik. Selv om en mellemindkomst-amerikaner har hoejere nominelt disponibel indkomst end en dansker, er en vasentlig del ikke disponibel for forbrug &ndash; men reserveret som bufferkapital mod systemiske risici.
     </div>
   </div>
 
   <div class="finding">
-    <div class="finding-num">2</div>
-    <div class="finding-body">
-      <strong>Metodologiske udfordringer i fordelingsanalyser paa tvaers af lande</strong>
-      De to landes statistikbureauer anvender vaesensforskeilige enheder: CBO maler pr. <em>husstand</em>; Finansministeriet maler pr. <em>voksenaekvivalent</em> (familieaekvivaleret). Denne asymmetri undervurderer systematisk USA's oeverste kvintil pr. person, da top-husstande typisk har 2&ndash;3+ indkomster, og overvurderer de laveste kvintiler, der hyppigt er enmandshusstande. Se <a href="#metodologi">metodologiafsnittet</a> for korrektionsfaktor.
+    <div class="fnum">2</div>
+    <div class="fbody">
+      <strong>Metodologisk ramme: OECD EG DNA og AIC-PPP</strong>
+      Analysen benytter OECD's Expert Group on Disparities in a National Accounts framework (EG DNA). Denne metode afstemmer mikrodata fra OECD's Income Distribution Database (IDD) med System of National Accounts (SNA) aggregater. Husholdningsrangeringen er baseret paa akvivaleret disponibel indkomst; vaerdien af sociale ydelser in kind (STIK) allokeres derefter pr. decil. Resultatet er et maal for Adjusted Disposable Income (ADI) inklusive STIK &mdash; et markant mere daekket billede end ren cash-indkomst. PPP-justeringen sikrer, at kobekraft sammenlignes &mdash; ikke blot nominelle doellartal.
     </div>
   </div>
 
   <div class="finding">
-    <div class="finding-num">3</div>
-    <div class="finding-body">
-      <strong>Opbygning af den empiriske kvintilramme</strong>
-      Begge landes data er hentet fra de officielle fordelingsanalyser, der inkluderer transferindkomster og skatter. For USA: CBO's <em>Income After Transfers and Taxes</em> inkluderer Medicare, Medicaid, SNAP og refundable tax credits. For Danmark: Finansministeriets <em>udvidede disponible indkomst</em> inkluderer oentlig service (sundhed og uddannelse) estimeret som gennemsnitlig udgift pr. bruger. Se <a href="#data">datatabeller</a> for specifikationer.
+    <div class="fnum">3</div>
+    <div class="fbody">
+      <strong>Det empiriske krydspunkt: strukturel konklusion</strong>
+      At krydspunktet ligger ved D3/D4 afspejler det grundlaeggende designvalg i de to systemer. Det danske stats STIK-pakke (universel sundhed, gratis uddannelse, stoerrelsesbaseret bornetilskud) er per-capita-naer-konstant. Det betyder, at ydelserne repraesenterer en langt stoerre procentvis forhoejelse for lav-indkomsthusstande end for hoejindkomsthusstande. Paa tvaers af D1&ndash;D3 overgaar denne STIK-forhojelse den tabte koebekraft fra hoeje skatter. Fra D4+ vender ligningen: skattebyrden begynder at overskride gevinsten fra de universelle ydelser.
     </div>
   </div>
 
   <div class="finding">
-    <div class="finding-num">4</div>
-    <div class="finding-body">
-      <strong>Socioekonomisk dynamik og incitamentsstrukturer</strong>
-      Den hoeje effektive marginalskat i Danmark (op til 56%) kobles traditionelt med reducerede arbejdsincitamenter. Empirien viser imidlertid hoeje beaestigelsesgrader paa tvaers af indkomstgrupper i DK, delvis fordi det universelle velfaerdssystem skaaber en robus "golv" uden sharpe benefit cliffs. I USA er det middel-indkomstlag (&quot;2.-4. kvintil&quot;) presset fra begge sider: for hoej indkomst til Medicaid, for lav til markedsbaseret sundhed. Det resulterer i det paradoks, der beneavenes &quot;det straffede middellag.&quot;
+    <div class="fnum">4</div>
+    <div class="fbody">
+      <strong>D10: USA dominerer massivt</strong>
+      I det oeverste decil er USA-fordelen $204.324 pr. person (&minus;64,8%). Dette afspejler tre faktorer: lavere marginalskat i USA's top, massivt stoerre markedsindkomst (kapitalgevinster, ledelsesvederlag) og det faktum, at AIC-PPP-tilgangen inkluderer Medicare/Medicaid men ikke det fulde vaerdipaaprojektionsvolaumen af privat sundhed (som high-income Americans forbruger i stor skala).
     </div>
   </div>
 
   <div class="finding">
-    <div class="finding-num">5</div>
-    <div class="finding-body">
-      <strong>Politiske implikationer og institutionelle konklusioner</strong>
-      Sammenligningen afslorer ikke nogen simpel vinder. Danmark leverer markant hoejere reel levestandard i 1.&ndash;3. kvintil. USA leverer markant hoejere beloenning i 5. kvintil, isaer for kapitalindkomster. For policymakers i begge lande er den centrale laering, at transfersystemets design (universelt vs. targeted) paavirker fordelingen mere end det nominelle skattepres alene.
+    <div class="fnum">5</div>
+    <div class="fbody">
+      <strong>Politisk implikation: design trumfer skattesats</strong>
+      Den centrale lerdom er, at det er <em>transfersystemets design</em> &ndash; universelt vs. targeted &ndash; snarere end det nominelle skattetryk, der bestemmer fordelingsresultatet. Danmark kan levere et bedre materielt leveniveau i bunden med et hoejere skattetryk, fordi ydelserne er universelle og per-capita-jaevnt fordelte. USA's targeted safety net (Medicaid, SNAP, EITC) er mere effektivt pr. dollar for de allerfattigste, men rammer tomrummet praecist: det er de lavere mellemindkomster (D4&ndash;D6) der presses haardest.
     </div>
   </div>
 </div>
 </section>
 
-<!-- ===== SEKTION 2: ANALYSE ===== -->
+
+<!-- ======= DEL II: KVINTIL-ANALYSE ======= -->
 <section id="analyse">
 <div class="container">
-  <div class="section-label">Del II &mdash; Analyse</div>
+  <div class="section-label">Del II &mdash; Supplerende kvintilanalyse: Effektiv fuldtidsaekvivalent</div>
   <h2>Hvad viser den effektive fuldtidsaekvivalent?</h2>
-  <p>Analysemetoden normaliserer indkomst + velfaerdsvaerdi til et <em>37-timers fuldtids-aarsvaerk</em> for at gøre tvaernationale sammenligninger af arbejdsmarkedsafkast mulige.</p>
+  <p>Den supplementaere analyse skalerer indkomst inkl. velfaerd op til en normaliseret 37-timers arbejdsuge for at illustrere afkastet pr. praesteret time. Dette er en <em>illustrativ metode</em> &ndash; ikke det primaeere sammenligningsgrundlag (som AIC-PPP er).</p>
 
-  <div class="card" style="border-left: 4px solid #17a2b8;">
-    <h3 style="margin-top:0; color: #17a2b8;">Beregningsmetoden</h3>
-    <p>For hver kvintil beregnes:</p>
-    <div style="background:#f8f9fa; border-radius:6px; padding:1rem; font-family:monospace; font-size:.9rem; margin:.8rem 0;">
-      Fuldtidsaekvivalent = (Indkomst + Offentlig velfaerd) &divide; Aarlige arbejdstimer &times; 1.924 timer
-    </div>
-    <p style="margin-bottom:0;font-family:sans-serif;font-size:.9rem;color:var(--muted);">1.924 timer svarer til 37 timer/uge &times; 52 uger. Metoden illustrerer vaerdien af velfaerd pr. indsats-time, snarere end det faktiske loenindtag.</p>
+  <div class="box box-info">
+    <strong>Beregningsformlen</strong>
+    Fuldtidsaekvivalent = (Indkomst + Offentlig velfaerd) &divide; Aarlige faktiske arbejdstimer &times; 1.924 timer<br>
+    <span style="font-size:.85rem;opacity:.8;">1.924 = 37 timer &times; 52 uger. Metoden viser systemets generositet pr. indsats-time, ikke faktisk loen.</span>
   </div>
 
-  <div class="alert">
+  <div class="box box-warn">
     <strong>Matematisk effekt i 1. kvintil</strong>
-    Baade i DK og USA bestaer bunden primeart af pensionister, studerende og ledige. Da arbejdstimetallet er meget lavt, giver divisionen en hoej timesats. Naar dette saa multipliceres med 1.924 timer, fremkommer astronomisk hoeje tal. Disse afspejler <em>velfaerdsaekvivalentens vaerdi</em>, ikke faktisk arbejdsindkomst.
+    Baade DK og USA's bundkvintil bestaer primeart af pensionister, studerende og ledige med faerre arbejdstimer. Naar man dividerer stor velfaerd med faerre timer giver det hoej "timelonn". Skaleret til 37t fremkommer stjernetal. Disse maal afspejler velfaerdens vaerdi pr. time, ikke hvad man kan tjene ved at arbejde.
   </div>
 
-  <div class="tabs" id="tabs-analyse">
-    <button class="tab-btn active" onclick="switchTab('analyse','dk')">Danmark</button>
-    <button class="tab-btn" onclick="switchTab('analyse','us')">USA</button>
-    <button class="tab-btn" onclick="switchTab('analyse','sammenlign')">Sammenligning</button>
+  <div class="tabs" id="tabs-q">
+    <button class="tab-btn active" onclick="switchTab('q','dk')">Danmark</button>
+    <button class="tab-btn" onclick="switchTab('q','us')">USA</button>
+    <button class="tab-btn" onclick="switchTab('q','sammenlign')">Sammenligning</button>
   </div>
 
-  <div id="tab-analyse-dk" class="tab-panel active">
-    <div class="table-wrap">
+  <!-- DK tab -->
+  <div id="tab-q-dk" class="tab-panel active">
+    <div class="tbl-wrap">
       <table>
-        <thead>
-          <tr>
-            <th>Kvintil</th>
-            <th>Udvidet indkomst (DKK)</th>
-            <th>Aarlige timer</th>
-            <th>Eff. timelonn (DKK)</th>
-            <th>Skaleret 37t (DKK)</th>
-          </tr>
-        </thead>
+        <thead><tr><th>Kvintil</th><th>Udvidet indkomst (DKK)</th><th>Aarlige timer</th><th>Eff. timelonn (DKK)</th><th>Skaleret 37t/uge (DKK)</th></tr></thead>
         <tbody>
           <tr><td><strong>1 (Bund 20%)</strong></td><td>224.000</td><td>412</td><td>543</td><td><strong>1.045.100</strong></td></tr>
           <tr><td><strong>2 (20&ndash;40%)</strong></td><td>288.000</td><td>945</td><td>305</td><td><strong>586.700</strong></td></tr>
@@ -522,9 +303,7 @@
           <tr><td><strong>4 (60&ndash;80%)</strong></td><td>392.000</td><td>1.710</td><td>229</td><td><strong>441.000</strong></td></tr>
           <tr><td><strong>5 (Top 20%)</strong></td><td>645.000</td><td>1.940</td><td>332</td><td><strong>639.700</strong></td></tr>
         </tbody>
-        <tfoot>
-          <tr><td colspan="5">Kilde: Finansministeriet, Fordeling og Incitamenter (2024) &amp; Oekonomiministeriet (2022). Voksenaekvivaleret, 2022-niveau.</td></tr>
-        </tfoot>
+        <tfoot><tr><td colspan="5">Kilde: Oekonomiministeriet (2022) + Fordeling og Incitamenter (2024). Voksenaekvivaleret. Udvidet disponibel indkomst inkl. offentlig service.</td></tr></tfoot>
       </table>
     </div>
     <div class="chart-wrap">
@@ -533,63 +312,23 @@
     </div>
   </div>
 
-  <div id="tab-analyse-us" class="tab-panel">
-    <div class="alert">
-      <strong>Korrektionsflag &mdash; verificerede CBO-tal afviger</strong>
-      CBO's officielle tal for "Income After Transfers and Taxes" (2021): Q1 = <strong>$48.700</strong> (analysen: $42.600) og Q5 = <strong>$316.800</strong> (analysen: $280.000). Q2&ndash;Q4 er internt konsistente med CBO-gennemsnittet. Se <a href="#metodologi">metodologiafsnittet</a> for diskussion af pandemi-korrektioner og kapitalgevinst-effekter.
+  <!-- US tab -->
+  <div id="tab-q-us" class="tab-panel">
+    <div class="box box-red">
+      <strong>Korrektionstabel &mdash; CBO-tal verificeret</strong>
+      Q1: CBO 2021 = <strong>$48.700</strong> (analysen: $42.600, &minus;12,6%). Q5: CBO = <strong>$316.800</strong> (analysen: $280.000, &minus;11,6%). Q2&ndash;Q4 er internt konsistente (gennemsnit $88.767 vs. CBO's $89.200). Se <a href="#data">datakvalitetssektionen</a>.
     </div>
-    <div class="table-wrap">
+    <div class="tbl-wrap">
       <table>
-        <thead>
-          <tr>
-            <th>Kvintil</th>
-            <th>Indkomst inkl. velfaerd (USD)</th>
-            <th>Aarlige timer<br><small>(husstand)</small></th>
-            <th>Eff. timelonn (USD)</th>
-            <th>Skaleret 37t (USD)</th>
-            <th>Ca. DKK</th>
-          </tr>
-        </thead>
+        <thead><tr><th>Kvintil</th><th>Indkomst inkl. velfaerd (USD)</th><th>Aarlige timer (husstand)</th><th>Eff. timelonn (USD)</th><th>Skaleret 37t (USD)</th><th>Ca. DKK</th></tr></thead>
         <tbody>
-          <tr>
-            <td><strong>1 (Bund 20%)</strong></td>
-            <td>$42.600 <span class="correction-badge" title="CBO officielt: $48.700">CBO: $48.700</span></td>
-            <td>850</td><td>$50,12</td>
-            <td><strong>$96.430</strong></td>
-            <td>ca. 665.000</td>
-          </tr>
-          <tr>
-            <td><strong>2 (20&ndash;40%)</strong></td>
-            <td>$60.200</td>
-            <td>1.550</td><td>$38,84</td>
-            <td><strong>$74.730</strong></td>
-            <td>ca. 515.000</td>
-          </tr>
-          <tr>
-            <td><strong>3 (40&ndash;60%)</strong></td>
-            <td>$84.100</td>
-            <td>2.150</td><td>$39,12</td>
-            <td><strong>$75.270</strong></td>
-            <td>ca. 519.000</td>
-          </tr>
-          <tr>
-            <td><strong>4 (60&ndash;80%)</strong></td>
-            <td>$122.000</td>
-            <td>2.650</td><td>$46,04</td>
-            <td><strong>$88.580</strong></td>
-            <td>ca. 611.000</td>
-          </tr>
-          <tr>
-            <td><strong>5 (Top 20%)</strong></td>
-            <td>$280.000 <span class="correction-badge" title="CBO officielt: $316.800">CBO: $316.800</span></td>
-            <td>3.200</td><td>$87,50</td>
-            <td><strong>$168.350</strong></td>
-            <td>ca. 1.161.000</td>
-          </tr>
+          <tr><td><strong>1 (Bund 20%)</strong></td><td>$42.600 <span class="cbadge">CBO: $48.700</span></td><td>850</td><td>$50,12</td><td><strong>$96.430</strong></td><td>ca. 665.000</td></tr>
+          <tr><td><strong>2 (20&ndash;40%)</strong></td><td>$60.200</td><td>1.550</td><td>$38,84</td><td><strong>$74.730</strong></td><td>ca. 515.000</td></tr>
+          <tr><td><strong>3 (40&ndash;60%)</strong></td><td>$84.100</td><td>2.150</td><td>$39,12</td><td><strong>$75.270</strong></td><td>ca. 519.000</td></tr>
+          <tr><td><strong>4 (60&ndash;80%)</strong></td><td>$122.000</td><td>2.650</td><td>$46,04</td><td><strong>$88.580</strong></td><td>ca. 611.000</td></tr>
+          <tr><td><strong>5 (Top 20%)</strong></td><td>$280.000 <span class="cbadge">CBO: $316.800</span></td><td>3.200</td><td>$87,50</td><td><strong>$168.350</strong></td><td>ca. 1.161.000</td></tr>
         </tbody>
-        <tfoot>
-          <tr><td colspan="6">Kilde: CBO, The Distribution of Household Income in 2021 (udg. 2024). Pr. husstand. Kurskurs ca. 6,9 DKK/USD.</td></tr>
-        </tfoot>
+        <tfoot><tr><td colspan="6">Kilde: CBO, The Distribution of Household Income in 2021 (udg. sep. 2024). <strong>OBS: Pr. husstand</strong>, ikke pr. person. Kurs: ca. 6,9 DKK/USD.</td></tr></tfoot>
       </table>
     </div>
     <div class="chart-wrap">
@@ -598,373 +337,292 @@
     </div>
   </div>
 
-  <div id="tab-analyse-sammenlign" class="tab-panel">
+  <!-- Sammenlign tab -->
+  <div id="tab-q-sammenlign" class="tab-panel">
     <div class="chart-wrap">
-      <div class="chart-title">Sammenligning: Skaleret fuldtidsaekvivalent (begge lande i USD-aekvivalent)</div>
+      <div class="chart-title">Sammenligning: Skaleret fuldtidsaekvivalent (begge i USD-aekvivalent, 6,9 DKK/USD)</div>
+      <div class="chart-sub">OBS: DK er pr. person (aekvivaleret); USA er pr. husstand. Direkte sammenligning er metodologisk problematisk. Se metodologiafsnittet.</div>
       <canvas id="chart-compare"></canvas>
     </div>
-    <div class="grid-2">
-      <div class="card">
-        <h3 style="color:var(--dk-red);">Danmark: Vigtigste observationer</h3>
-        <ul style="font-family:sans-serif;font-size:.9rem;padding-left:1.2rem;line-height:2;">
-          <li>1. kvintil: "Velfaerdsturbine" &mdash; over 1 mio. DKK skaleret</li>
-          <li>3.&ndash;4. kvintil er det <em>laveste</em> afkast (&lt;445.000)</li>
-          <li>5. kvintil begraenses af hoej marginalskat (~640.000)</li>
-          <li>Smal spredning mellem Q2&ndash;Q5 (640 vs 435 = faktor 1,5)</li>
-        </ul>
-      </div>
-      <div class="card">
-        <h3 style="color:var(--us-blue);">USA: Vigtigste observationer</h3>
-        <ul style="font-family:sans-serif;font-size:.9rem;padding-left:1.2rem;line-height:2;">
-          <li>Q5 dominerer markant: $168.350 (faktor 2,3x Q4)</li>
-          <li>Q2&ndash;Q3 er faktisk lavere end DK's tilsvarende</li>
-          <li>Q1 (husstand-basis) ser hoejere ud end DK i USD</li>
-          <li>Stor spredning: Q5 er 2,3&times; Q4</li>
-        </ul>
-      </div>
+    <div class="box box-info" style="margin-top:0">
+      <strong>Husstand-korrektion for USA Q5</strong>
+      $168.350 pr. husstand &divide; 3,1 pers. (Census Bureau, top kvintil) = ca. <strong>$54.300 pr. person</strong>. DK's Q5 skaleret: 639.700 DKK &divide; 6,9 = ca. <strong>$92.700 pr. person</strong>. Per person er DK Q5 altsaa faktisk <em>hoejere</em> end USA Q5 i denne metrik &ndash; mens det modsatte er tilfaldet i AIC-PPP-metoden, der inkluderer kapitalindkomster bedre.
     </div>
-
-    <div class="card" style="background: #f0f7ff; border-color: #90caf9;">
-      <h3 style="margin-top:0; color: var(--us-blue);">Husstand vs. voksenaekvivalent: Det centrale problem</h3>
-      <p style="font-family:sans-serif;font-size:.9rem;">En direkte sammenligning er metodologisk problematisk. Gennemsnitlig husstandsstorrelse i USA's 5. kvintil er ca. <strong>2,9 personer</strong> (Census Bureau). Det betyder, at $168.350 pr. husstand svarer til ca. <strong>$58.000 pr. person</strong> &mdash; markant lavere end hvad det ser ud i tabellen. Omvendt er 1. kvintil i USA primeart enmandshusstande (~1,5 pers.), saå den "skalade" indkomst pr. person der er relativt haejere. <a href="#metodologi">Laes korrektet analyse.</a></p>
+    <div class="grid2" style="margin-top:1.5rem">
+      <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.25rem;">
+        <h3 style="margin-top:0;color:var(--dk)">Danmark: Observationer</h3>
+        <ul style="font-family:sans-serif;font-size:.88rem;padding-left:1.1rem;line-height:2.1;">
+          <li>Q1: "Velfaerdsturbine" &mdash; over 1 mio. DKK skaleret</li>
+          <li>Q3&ndash;Q4 er laavest afkast (&lt;445.000 DKK)</li>
+          <li>Q5 begraenses af marginalskat (640.000 DKK)</li>
+          <li>Smal spredning: Q2&ndash;Q5 spand kun faktor 1,5&times;</li>
+        </ul>
+      </div>
+      <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.25rem;">
+        <h3 style="margin-top:0;color:var(--us)">USA: Observationer</h3>
+        <ul style="font-family:sans-serif;font-size:.88rem;padding-left:1.1rem;line-height:2.1;">
+          <li>Q5 dominerer markant: $168k (husstand)</li>
+          <li>Q2&ndash;Q3 lavere end DK's tilsvarende kvintiler</li>
+          <li>Stor spredning: Q5 er 2,3&times; stoerre end Q4</li>
+          <li>Top-kvintil husstand: 2&ndash;3 fuldtidsindkomster</li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>
 </section>
 
-<!-- ===== SEKTION 3: DATA ===== -->
+
+<!-- ======= DEL III: DATAKVALITET ======= -->
 <section id="data">
 <div class="container">
-  <div class="section-label">Del III &mdash; Datakvalitet</div>
+  <div class="section-label">Del III &mdash; Datakvalitet og kildeverificering</div>
   <h2>Verificerede CBO-tal vs. analysens tal</h2>
+  <p>Tallene er krydstjekket mod CBO's officielle rapport <em>The Distribution of Household Income in 2021</em> (udgivet september 2024, publikation 60341).</p>
 
-  <p>Nedenstaaende tabel viser de officielle CBO 2021-tal sammenholdt med analysens tal. Kilderne er verificeret direkte fra CBO's rapport <em>The Distribution of Household Income in 2021</em> (udgivet september 2024).</p>
-
-  <div class="table-wrap">
+  <div class="tbl-wrap">
     <table>
       <thead>
-        <tr>
-          <th>Kvintil</th>
-          <th>Analysens tal (USD)</th>
-          <th>CBO 2021 verificeret (USD)</th>
-          <th>Afvigelse</th>
-          <th>Sandsynlig forklaring</th>
-        </tr>
+        <tr><th>Kvintil</th><th>Analysens tal</th><th>CBO 2021 verificeret</th><th>Afvigelse</th><th>Sandsynlig forklaring</th></tr>
       </thead>
       <tbody>
         <tr>
-          <td>Q1</td>
-          <td>$42.600</td>
-          <td style="color:var(--success-border);font-weight:bold;">$48.700</td>
-          <td style="color:#dc3545;">&minus;12,6%</td>
-          <td>Svarer til CBO's "uden pandemi-transfers" baseline (~$41.200)</td>
+          <td>Q1</td><td>$42.600</td>
+          <td style="color:#059669;font-weight:700">$48.700 <span class="srcbadge">verificeret</span></td>
+          <td style="color:#dc2626">&minus;12,6%</td>
+          <td>Svarer til "uden pandemi-transfers" baseline (~$41.200). Muligvis brug af 2019-niveau.</td>
         </tr>
         <tr>
-          <td>Q2</td>
-          <td>$60.200</td>
-          <td style="color:var(--muted);">Ikke isoleret i rapporten</td>
+          <td>Q2</td><td>$60.200</td>
+          <td style="color:var(--muted)">Ikke isoleret</td>
           <td>&mdash;</td>
-          <td>Konsistent med Q2&ndash;Q4 gennemsnit ($89.200)</td>
+          <td>Konsistent med Q2&ndash;Q4-gns. ($89.200): (60.200+84.100+122.000)/3 = $88.767</td>
         </tr>
         <tr>
-          <td>Q3</td>
-          <td>$84.100</td>
-          <td style="color:var(--muted);">Ikke isoleret i rapporten</td>
+          <td>Q3</td><td>$84.100</td>
+          <td style="color:var(--muted)">Ikke isoleret</td>
           <td>&mdash;</td>
-          <td>Konsistent: (60.200+84.100+122.000)/3 = $88.767 &asymp; $89.200</td>
+          <td>Se Q2. CBO rapporterer Q2&ndash;Q4 samlet i hoveddokumentet.</td>
         </tr>
         <tr>
-          <td>Q4</td>
-          <td>$122.000</td>
-          <td style="color:var(--muted);">Ikke isoleret i rapporten</td>
+          <td>Q4</td><td>$122.000</td>
+          <td style="color:var(--muted)">Ikke isoleret</td>
           <td>&mdash;</td>
-          <td>Se Q3-note</td>
+          <td>Se Q2.</td>
         </tr>
         <tr>
-          <td>Q5</td>
-          <td>$280.000</td>
-          <td style="color:var(--success-border);font-weight:bold;">$316.800</td>
-          <td style="color:#dc3545;">&minus;11,6%</td>
-          <td>Sandsynligvis ekskluderer realiserede kapitalgevinster (2021: rekordhoeje)</td>
+          <td>Q5</td><td>$280.000</td>
+          <td style="color:#059669;font-weight:700">$316.800 <span class="srcbadge">verificeret</span></td>
+          <td style="color:#dc2626">&minus;11,6%</td>
+          <td>2021 var rekordaar for kapitalgevinster (+72%). Analysen ser ud til at have ekskluderet eller diskonteret disse.</td>
         </tr>
       </tbody>
       <tfoot>
-        <tr><td colspan="5">Kilde: CBO (2024), "The Distribution of Household Income in 2021". Note: CBO rapporterer Q2-Q4 samlet som gennemsnit ($89.200) og ikke individuelt i hovedd rapporten.</td></tr>
+        <tr><td colspan="5">CBO bekraefter: Q1 = $48.700, Q5 = $316.800 "after transfers and taxes" (2021-dollars). Gennemsnit Q2&ndash;Q4 = $89.200. Kilde: cbo.gov/publication/60341.</td></tr>
       </tfoot>
     </table>
   </div>
 
   <div class="chart-wrap">
-    <div class="chart-title">Verificerede CBO-tal vs. analysens tal (Income After Transfers &amp; Taxes, 2021 USD)</div>
-    <canvas id="chart-verification"></canvas>
+    <div class="chart-title">Analysens tal vs. CBO verificerede tal (Income After Transfers &amp; Taxes, 2021 USD)</div>
+    <canvas id="chart-verify"></canvas>
+  </div>
+
+  <div class="box box-ok">
+    <strong>Overordnet konklusion holder</strong>
+    Q1 og Q5 er ca. 12% for lave, sandsynligvis pga. brug af pre-pandemi-baseline eller eksklusion af kapitalgevinster. Q2&ndash;Q4 er internt konsistente. Korrektionerne aendrer ikke den overordnede konklusion om systemforskellene &mdash; de paavorker primeart tallets absolutte stoerrelse, ikke det relative monster.
   </div>
 </div>
 </section>
 
-<!-- ===== SEKTION 4: METODOLOGI ===== -->
+
+<!-- ======= DEL IV: METODOLOGI ======= -->
 <section id="metodologi">
 <div class="container">
   <div class="section-label">Del IV &mdash; Metodologisk stringens</div>
   <h2>Kritisk metodevurdering</h2>
+  <p>En tvaernational indkomstsammenligning er metodologisk kompleks. Nedenstaaende er de vigtigste problemer og anbefalede korrektioner.</p>
 
-  <p>Nedenfor er de vigtigste metodologiske udfordringer ved at sammenligne Danmarks og USA's indkomstfordeling direkte.</p>
-
-  <div class="method-flag red">
-    <div class="flag-title">&#9888; Kritisk: Husstand vs. voksenaekvivalent (aeppler og appelsiner)</div>
-    <p>Dette er analysens stoerste metodologiske problem. CBO maler pr. <em>husstand</em>; Finansministeriet maler pr. <em>voksenaekvivalent</em>. Det er <strong>ikke den samme enhed</strong>. En topkvintil husstand i USA har i gennemsnit 3,1 personer og typisk 2&ndash;2,5 fuldtidsindkomster. Det giver $316.800 pr. husstand = ca. $102.000 pr. person. For Danmark er 645.000 DKK allerede aekvaleret = ca. 645.000 DKK pr. &ldquo;person&rdquo; i regnestykktet. Omregnet til USD til 2022-kurs (ca. 7,1): $90.800. USA's top-kvintil er altsaa paa personsaastaet <em>hoejere</em> end DK, men ikke $168.350 vs. $639.700 DKK, som tabelerne antyder.</p>
+  <div class="mflag red">
+    <div class="mflag-title">&#9888;&#65039; Kritisk: Husstand vs. voksenaekvivalent (Del II-analysen)</div>
+    CBO maler pr. <em>husstand</em>; Finansministeriet maler pr. <em>voksenaekvivalent</em>. En top-kvintil husstand i USA har gennemsnitlig 3,1 personer og 2&ndash;2,5 fuldtidsindkomster. $316.800 pr. husstand = ca. $102.000 pr. person. DK's 645.000 DKK pr. aekvivalent = ca. $91.000 pr. person. <strong>Problemet gaelder Del II-analysen</strong> &mdash; AIC-PPP-metoden (Del I) loser dette ved at operere pr. person fra starten.
   </div>
 
-  <div class="method-flag">
-    <div class="flag-title">&#9432; Aarsforskel: Danmark 2022, USA 2021</div>
-    <p>Dataene er fra to forskellige aar. CBO udgav sin 2022-rapport i januar 2026, som viser et fald i Q1 og Q5 efter udloebet af pandemi-supports. En metodologisk stram analyse boer bruge samme aar. CBO 2022 er nu tilgaengeligt (<a href="https://www.cbo.gov/publication/62300" target="_blank">cbo.gov/publication/62300</a>).</p>
+  <div class="mflag green">
+    <div class="mflag-title">&#10003; AIC-PPP-metoden (Del I) loser de fleste problemer</div>
+    OECD EG DNA-rammen adresserer: (1) per-person vs. per-husstand via aekvivalering, (2) inkluderer offentlige ydelsers vaerdi som STIK, (3) bruger PPP-korrektioner for koebekraft. Det er den bedst mulige sammenligning med eksisterende data.
   </div>
 
-  <div class="method-flag">
-    <div class="flag-title">&#9432; Indkomstdefinition: Hvad inkluderes i &ldquo;offentlig velfaerd&rdquo;?</div>
-    <p>CBO inkluderer Medicare, Medicaid og SNAP som in-kind transfers (vaerdisat til statens udgift). Finansministeriet inkluderer <em>alle</em> universelle offentlige serviceydelser inkl. folkeskole, gymnasium og hospitalsvaesenets generelle forbrug. Dette bidrager til, at den danske 1. kvintil har en meget hoej &ldquo;udvidet indkomst&rdquo; &mdash; men det er ikke en direkte sammenlignelig stoerrelse med CBO's tal.</p>
+  <div class="mflag">
+    <div class="mflag-title">&#8505;&#65039; Aarsforskel: DK 2022 vs. USA 2021</div>
+    Del II-analysen sammenligner forskellige aar. CBO's 2022-rapport er nu tilgaengelig og ville vise laavere Q1 (pandemi-transfers udloebet) og laavere Q5 (kapitalgevinster normaliseret). Det giver mere sammenlignelige tal med DK 2022.
   </div>
 
-  <div class="method-flag">
-    <div class="flag-title">&#9432; Arbejdstimer pr. kvintil: Estimater, ikke officielle tal</div>
-    <p>CBO publicerer <em>ikke</em> officielle timer-pr-kvintil-tal i standardrapporten. Tallene i analysen (850/1.550/2.150/2.650/3.200 for USA) er estimater. Specielt 3.200 timer for Q5 (62 timer/uge) er hoejt &mdash; topkvintil-husstande har 2+ indkomster, men det boer praeciseres at det er husstandstimer. For Danmark er DST's AKU-baserede data mere officielt forankret.</p>
+  <div class="mflag">
+    <div class="mflag-title">&#8505;&#65039; Arbejdstimer pr. kvintil: Estimater, ikke officielle tal</div>
+    CBO publicerer ikke officielle timer-pr-kvintil tal. Timerne (850/1550/2150/2650/3200) er estimater. Q5's 3.200 timer svarer til 61,5 timer/uge, hvilket er plausibelt for en to-indkomst husstand (2 &times; 30,7 t/uge) men bor praeciseres. For Danmark er DST-AKU-baserede data officielt forankret.
   </div>
 
-  <div class="method-flag">
-    <div class="flag-title">&#9432; Skaleringsmetodens fortolkningsmaessige faeldefald</div>
-    <p>At skalere en pensionists understottelse op til 37 timer giver et tal over 1 million kr., men det afspejler ikke hvad en person <em>kan</em> tjene ved at arbejde. Metoden er illustrativ for systemets generositet pr. praesteret time, men maa ikke laeses som en "loen". Graferne boer tydeligt labellere x-aksen som "Velfaerdsaekvivalent, skaleret" &mdash; ikke "efektiv loen".</p>
+  <div class="mflag">
+    <div class="mflag-title">&#8505;&#65039; Skaleringsmetodens fortolkningsmaessige faeldefald</div>
+    At skalere pensionistens understottelse op til 37 timer giver 1 mio. DKK, men det afspejler ikke hvad personen <em>kan</em> tjene. Metoden illustrerer systemets generositet pr. praesteret time, og bor laeses som netop deet &mdash; ikke som en "loen".
   </div>
 
-  <h3>Anbefalede korrektioner for en metodologisk stringent analyse</h3>
-  <div class="table-wrap">
+  <h3>Anbefalede korrektioner for maksimal stringens</h3>
+  <div class="tbl-wrap">
     <table>
-      <thead>
-        <tr>
-          <th>Problem</th>
-          <th>Anbefalet korrektion</th>
-          <th>Datakilde</th>
-        </tr>
-      </thead>
+      <thead><tr><th>Problem</th><th>Korrektion</th><th>Datakilde</th></tr></thead>
       <tbody>
-        <tr>
-          <td>Husstand vs. person</td>
-          <td>Divider CBO-tal med gennemsnitlig husstandsstaerrelse pr. kvintil (Census Bureau CPS)</td>
-          <td>Census Bureau, Current Population Survey</td>
-        </tr>
-        <tr>
-          <td>Aarsforskel</td>
-          <td>Brug CBO 2022 (udgivet januar 2026) for direkte sammenligning</td>
-          <td>CBO, publication 62300</td>
-        </tr>
-        <tr>
-          <td>Incl. offentlig service DK</td>
-          <td>Brug kun disponibel indkomst (ekskl. offentlig service) for at matche CBO-definition. Eller tilfoej OECD-estimat for USA's offentlige servicevaerdi.</td>
-          <td>OECD Statistics, Government at a Glance</td>
-        </tr>
-        <tr>
-          <td>Timer-estimater USA</td>
-          <td>Brug BLS American Time Use Survey for timer pr. indkomstkvintil</td>
-          <td>BLS, American Time Use Survey</td>
-        </tr>
+        <tr><td>Husstand vs. person (Del II)</td><td>Divider CBO-tal med husstandsstorrelse pr. kvintil</td><td>Census Bureau, Current Population Survey</td></tr>
+        <tr><td>Aarsforskel</td><td>Brug CBO 2022 (cbo.gov/publication/62300)</td><td>CBO 2022</td></tr>
+        <tr><td>Timer-estimater USA</td><td>Brug BLS American Time Use Survey</td><td>BLS, ATUS tabel 1</td></tr>
+        <tr><td>Overordnet bedste metode</td><td>Brug AIC-PPP (Del I) som primaer analyse</td><td>OECD IDD + EG DNA</td></tr>
       </tbody>
     </table>
-  </div>
-
-  <div class="alert success">
-    <strong>Konklusionerne holder trods unoejagtigheder</strong>
-    De metodologiske problemer aendrer ikke den overordnede konklusion: Danmark har en markant starkere omfordeling i bunden, og USA beloenner toppen markant mere. Det centrale resultat &mdash; at det danske middellag betaler hoejest relativt til sit afkast &mdash; er robust paa tvaers af rimelige justeringer.
   </div>
 </div>
 </section>
 
 <footer>
-  <p>Analyse baseret paa: <a href="https://www.cbo.gov/publication/60341" target="_blank">CBO 2021 Income Distribution</a> &bull; <a href="https://oem.dk/media/40ejpnwj/fordeling-og-incitamenter-2024.pdf" target="_blank">Fordeling og Incitamenter 2024</a> &bull; <a href="https://oem.dk/media/w1sneg1a/indkomstudvikling-og-forskelle.pdf" target="_blank">Indkomstudvikling og -forskelle 2022</a></p>
-  <p style="margin-top:.5rem; opacity:.6;">Lavet af Sigurd Seindal Krabbe &bull; 2025</p>
+  <p>
+    <a href="https://www.cbo.gov/publication/60341" target="_blank">CBO 2021 Household Income</a> &nbsp;&bull;&nbsp;
+    <a href="https://www.cbo.gov/publication/62300" target="_blank">CBO 2022 Household Income</a> &nbsp;&bull;&nbsp;
+    <a href="https://oem.dk/media/40ejpnwj/fordeling-og-incitamenter-2024.pdf" target="_blank">Fordeling og Incitamenter 2024</a> &nbsp;&bull;&nbsp;
+    <a href="https://oem.dk/media/w1sneg1a/indkomstudvikling-og-forskelle.pdf" target="_blank">Indkomstudvikling 2022</a>
+  </p>
+  <p>Krabbe (2024&ndash;2025) &bull; OECD EG DNA &bull; AIC-PPP metode</p>
 </footer>
+
 
 <script>
 // Tab switching
-function switchTab(group, tab) {
-  document.querySelectorAll(`[id^="tab-${group}-"]`).forEach(el => el.classList.remove('active'));
-  document.getElementById(`tab-${group}-${tab}`).classList.add('active');
-  document.querySelectorAll(`#tabs-${group} .tab-btn`).forEach((btn, i) => {
-    const tabs = ['dk','us','sammenlign'];
-    btn.classList.toggle('active', tabs[i] === tab);
-  });
+function switchTab(g, t) {
+  document.querySelectorAll(`[id^="tab-${g}-"]`).forEach(el => el.classList.remove('active'));
+  document.getElementById(`tab-${g}-${t}`).classList.add('active');
+  const order = {dk:0,us:1,sammenlign:2};
+  document.querySelectorAll(`#tabs-${g} .tab-btn`).forEach((b,i) => b.classList.toggle('active', i===order[t]));
 }
 
-// Color helpers
-const DK_RED = '#C60C30';
-const US_BLUE = '#0A3161';
-const DK_LIGHT = 'rgba(198,12,48,0.15)';
-const US_LIGHT = 'rgba(10,49,97,0.15)';
+const DK = '#C60C30', US = '#0A3161';
+const decils = ['D1','D2','D3','D4','D5','D6','D7','D8','D9','D10'];
+const dkData = [35729,43668,48961,54254,59548,64841,72780,78074,92630,111156];
+const usData = [23614,38727,47228,56673,66119,75564,85010,94455,141683,315480];
+const diff   = dkData.map((v,i) => v - usData[i]);
 
-const quintiles = ['1. kvintil\n(bund)', '2. kvintil', '3. kvintil', '4. kvintil', '5. kvintil\n(top)'];
+// AIC-PPP chart
+new Chart(document.getElementById('chart-aicppp'), {
+  type: 'bar',
+  data: {
+    labels: decils,
+    datasets: [
+      { label: 'Danmark (AIC-PPP, USD)', data: dkData, backgroundColor: 'rgba(198,12,48,.8)', borderColor: DK, borderWidth: 1 },
+      { label: 'USA (AIC-PPP, USD)',     data: usData, backgroundColor: 'rgba(10,49,97,.8)',  borderColor: US, borderWidth: 1 }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'top' },
+      annotation: {},
+      tooltip: { callbacks: { label: c => c.dataset.label + ': $' + c.parsed.y.toLocaleString('en-US') } }
+    },
+    scales: { y: { beginAtZero: true, ticks: { callback: v => '$' + (v/1000).toFixed(0) + 'k' } } }
+  }
+});
 
-// DK chart
+// Diff chart
+new Chart(document.getElementById('chart-diff'), {
+  type: 'bar',
+  data: {
+    labels: decils,
+    datasets: [{
+      label: 'DK minus USA (USD)',
+      data: diff,
+      backgroundColor: diff.map(v => v >= 0 ? 'rgba(198,12,48,.75)' : 'rgba(10,49,97,.75)'),
+      borderColor:     diff.map(v => v >= 0 ? DK : US),
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: c => (c.parsed.y > 0 ? '+' : '') + '$' + c.parsed.y.toLocaleString('en-US') } }
+    },
+    scales: {
+      y: {
+        ticks: { callback: v => (v>=0?'+':'') + '$' + (v/1000).toFixed(0) + 'k' },
+        grid: { color: ctx => ctx.tick.value === 0 ? '#888' : '#e5e7eb', lineWidth: ctx => ctx.tick.value === 0 ? 2 : 1 }
+      }
+    }
+  }
+});
+
+// DK quintile chart
 new Chart(document.getElementById('chart-dk'), {
   type: 'bar',
   data: {
-    labels: ['1. kvintil (bund)', '2. kvintil', '3. kvintil', '4. kvintil', '5. kvintil (top)'],
-    datasets: [{
-      label: 'Skaleret aarsinkomst (DKK)',
-      data: [1045100, 586700, 435000, 441000, 639700],
-      backgroundColor: [DK_RED, '#d45e73', '#e08090', '#c9d4de', '#8a0020'],
-      borderColor: [DK_RED, '#b01025', '#b01025', '#b01025', '#600015'],
-      borderWidth: 1
-    }]
+    labels: ['Q1 (bund)','Q2','Q3','Q4','Q5 (top)'],
+    datasets: [{ label: 'Skaleret (DKK)', data: [1045100,586700,435000,441000,639700],
+      backgroundColor: ['#C60C30','#d9526a','#e8939f','#c9d4de','#8a0020'], borderWidth: 0 }]
   },
-  options: {
-    responsive: true,
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        callbacks: {
-          label: ctx => `${ctx.parsed.y.toLocaleString('da-DK')} DKK`
-        }
-      }
-    },
-    scales: {
-      y: {
-        beginAtZero: true,
-        ticks: {
-          callback: v => (v/1000) + '.000'
-        }
-      }
-    }
-  }
+  options: { responsive: true, plugins: { legend: { display: false },
+    tooltip: { callbacks: { label: c => c.parsed.y.toLocaleString('da-DK') + ' DKK' } } },
+    scales: { y: { beginAtZero: true, ticks: { callback: v => (v/1000).toFixed(0) + 'k' } } } }
 });
 
-// US chart
+// US quintile chart
 new Chart(document.getElementById('chart-us'), {
   type: 'bar',
   data: {
-    labels: ['1. kvintil (bund)', '2. kvintil', '3. kvintil', '4. kvintil', '5. kvintil (top)'],
-    datasets: [{
-      label: 'Skaleret aarsinkomst (USD)',
-      data: [96430, 74730, 75270, 88580, 168350],
-      backgroundColor: [US_BLUE, '#1a5276', '#2e6fa3', '#4a86b8', '#06203d'],
-      borderColor: US_BLUE,
-      borderWidth: 1
-    }]
+    labels: ['Q1 (bund)','Q2','Q3','Q4','Q5 (top)'],
+    datasets: [{ label: 'Skaleret (USD)', data: [96430,74730,75270,88580,168350],
+      backgroundColor: ['#0A3161','#1a5276','#2e6fa3','#4a86b8','#06203d'], borderWidth: 0 }]
   },
-  options: {
-    responsive: true,
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        callbacks: {
-          label: ctx => '$' + ctx.parsed.y.toLocaleString('en-US')
-        }
-      }
-    },
-    scales: {
-      y: {
-        beginAtZero: true,
-        ticks: {
-          callback: v => '$' + (v/1000) + 'k'
-        }
-      }
-    }
-  }
+  options: { responsive: true, plugins: { legend: { display: false },
+    tooltip: { callbacks: { label: c => '$' + c.parsed.y.toLocaleString('en-US') } } },
+    scales: { y: { beginAtZero: true, ticks: { callback: v => '$' + (v/1000).toFixed(0) + 'k' } } } }
 });
 
-// Comparison chart (both in USD equivalent, 1 USD = 6.9 DKK)
+// Compare chart
 const rate = 6.9;
-const dkInUSD = [1045100/rate, 586700/rate, 435000/rate, 441000/rate, 639700/rate];
-const usVals  = [96430, 74730, 75270, 88580, 168350];
-const labels  = ['1. kvintil (bund)', '2. kvintil', '3. kvintil', '4. kvintil', '5. kvintil (top)'];
-
 new Chart(document.getElementById('chart-compare'), {
   type: 'bar',
   data: {
-    labels,
+    labels: ['Q1 (bund)','Q2','Q3','Q4','Q5 (top)'],
     datasets: [
-      {
-        label: 'Danmark (USD-aekv., 6,9 DKK/USD)',
-        data: dkInUSD.map(v => Math.round(v)),
-        backgroundColor: 'rgba(198,12,48,0.75)',
-        borderColor: DK_RED,
-        borderWidth: 1
-      },
-      {
-        label: 'USA (pr. husstand)',
-        data: usVals,
-        backgroundColor: 'rgba(10,49,97,0.75)',
-        borderColor: US_BLUE,
-        borderWidth: 1
-      }
+      { label: 'Danmark (USD-aekv.)', data: [Math.round(1045100/rate),Math.round(586700/rate),Math.round(435000/rate),Math.round(441000/rate),Math.round(639700/rate)],
+        backgroundColor: 'rgba(198,12,48,.75)', borderColor: DK, borderWidth: 1 },
+      { label: 'USA (pr. husstand)', data: [96430,74730,75270,88580,168350],
+        backgroundColor: 'rgba(10,49,97,.75)', borderColor: US, borderWidth: 1 }
     ]
   },
-  options: {
-    responsive: true,
-    plugins: {
-      legend: { position: 'top' },
-      tooltip: {
-        callbacks: {
-          label: ctx => ctx.dataset.label + ': $' + Math.round(ctx.parsed.y).toLocaleString('en-US')
-        }
-      }
-    },
-    scales: {
-      y: {
-        beginAtZero: true,
-        ticks: {
-          callback: v => '$' + (v/1000).toFixed(0) + 'k'
-        }
-      }
-    }
-  }
+  options: { responsive: true, plugins: { legend: { position: 'top' },
+    tooltip: { callbacks: { label: c => c.dataset.label + ': $' + Math.round(c.parsed.y).toLocaleString('en-US') } } },
+    scales: { y: { beginAtZero: true, ticks: { callback: v => '$' + (v/1000).toFixed(0) + 'k' } } } }
 });
 
 // Verification chart
-new Chart(document.getElementById('chart-verification'), {
+new Chart(document.getElementById('chart-verify'), {
   type: 'bar',
   data: {
-    labels: ['Q1', 'Q2', 'Q3', 'Q4', 'Q5'],
+    labels: ['Q1','Q2','Q3','Q4','Q5'],
     datasets: [
-      {
-        label: 'Analysens tal (USD)',
-        data: [42600, 60200, 84100, 122000, 280000],
-        backgroundColor: 'rgba(220,53,69,0.7)',
-        borderColor: '#dc3545',
-        borderWidth: 1
-      },
-      {
-        label: 'CBO officielt 2021 (verificeret, USD)',
-        data: [48700, null, null, null, 316800],
-        backgroundColor: 'rgba(25,135,84,0.7)',
-        borderColor: '#198754',
-        borderWidth: 1
-      }
+      { label: 'Analysens tal', data: [42600,60200,84100,122000,280000], backgroundColor: 'rgba(220,38,38,.7)', borderColor: '#dc2626', borderWidth: 1 },
+      { label: 'CBO verificeret (Q1 + Q5)', data: [48700,null,null,null,316800], backgroundColor: 'rgba(16,185,129,.75)', borderColor: '#10b981', borderWidth: 1 }
     ]
   },
-  options: {
-    responsive: true,
-    plugins: {
-      legend: { position: 'top' },
-      tooltip: {
-        callbacks: {
-          label: ctx => ctx.dataset.label + ': $' + (ctx.parsed.y||0).toLocaleString('en-US')
-        }
-      }
-    },
-    scales: {
-      y: {
-        beginAtZero: true,
-        ticks: {
-          callback: v => '$' + (v/1000).toFixed(0) + 'k'
-        }
-      }
-    }
-  }
+  options: { responsive: true, plugins: { legend: { position: 'top' },
+    tooltip: { callbacks: { label: c => c.dataset.label + ': $' + (c.parsed.y||0).toLocaleString('en-US') } } },
+    scales: { y: { beginAtZero: true, ticks: { callback: v => '$' + (v/1000).toFixed(0) + 'k' } } } }
 });
 
-// Smooth scroll for nav links
+// Smooth nav scroll + active state
 document.querySelectorAll('nav a').forEach(a => {
   a.addEventListener('click', e => {
     e.preventDefault();
-    const target = document.querySelector(a.getAttribute('href'));
-    if (target) target.scrollIntoView({ behavior: 'smooth' });
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) t.scrollIntoView({ behavior: 'smooth' });
     document.querySelectorAll('nav a').forEach(x => x.classList.remove('active'));
     a.classList.add('active');
   });
